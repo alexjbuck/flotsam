@@ -2,7 +2,6 @@
 	import type { ActionData, PageData } from "./$types";
 
     export let form: ActionData;
-    export let page: PageData;
 </script>
 
 <h1>Welcome to Flotsam</h1>
