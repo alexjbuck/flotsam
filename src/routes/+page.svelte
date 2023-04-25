@@ -24,7 +24,7 @@
 
 {#if form?.success==true}
     <h2>New flotsam created!</h2>
-    <p>Use: <a href='flotsam.vercel.app/f/${form.nickname}'>flotsam.vercel.app/f/{form.nickname}</a></p>
+    <p>Use: <a href='https://flotsam.vercel.app/f/${form.nickname}'>flotsam.vercel.app/f/{form.nickname}</a></p>
     <p>to get to {form.url}</p>
 {:else if form?.success==false}
     <h2>There was an error.</h2>
