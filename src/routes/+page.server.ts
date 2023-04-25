@@ -1,5 +1,13 @@
 import { supabase } from '$src/lib/db/supabaseClient';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({url}) => {
+    const url_nicknames = await supabase.from('url_nicknames')
+    .select('*')
+    const {origin} = url
+    console.log(`the origin is ${origin}`)
+    return { url_nicknames , origin }
+};
 
 export const actions = {
     default: async ({request}) => {
