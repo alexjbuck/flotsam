@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { ActionData, PageData } from './$types';
 	import { clipboard } from '@skeletonlabs/skeleton';
+    import { toastStore } from '@skeletonlabs/skeleton';
+    import type { ToastSettings } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -10,7 +12,9 @@
 	data.url_nicknames.data.sort((a, b) => a.nickname.localeCompare(b.nickname));
 	if (form?.success) {
 		shorturl = `${data.origin}/f/${form.nickname}`;
-	}
+    }
+
+
 </script>
 
 <div>
@@ -73,7 +77,14 @@
 			</thead>
 			<tbody>
 				{#each data.url_nicknames.data as entry}
-					<tr>
+					<tr use:clipboard={`${data.origin}/f/${entry.nickname}`} 
+                        on:click={()=>{
+                            const t = {
+                                message: `/f/${entry.nickname} copied!`,
+                                };
+                            toastStore.trigger(t);
+                        }
+                    }>
 						<td><span class="text-surface-600">/f/</span>{entry.nickname}</td>
 						<td>{entry.url}</td>
 					</tr>

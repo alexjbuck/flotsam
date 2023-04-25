@@ -9,7 +9,7 @@
 	// Finally, your application's global stylesheet (sometimes labeled 'app.css')
 	import '$src/app.postcss';
 
-
+    import { Toast } from '@skeletonlabs/skeleton';
 	import { dev } from '$app/environment';
 	import { inject } from '@vercel/analytics';
 
@@ -25,3 +25,5 @@
         <slot />
     </div>
 </div>
+<Toast />
+
