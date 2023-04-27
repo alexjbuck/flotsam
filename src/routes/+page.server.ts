@@ -11,9 +11,9 @@ export const load: PageServerLoad = async ({url}) => {
 export const actions = {
     default: async ({request}) => {
         const formData = await request.formData();
-        const url = formData.get('url') as string;
-        const nickname = formData.get('nickname') as string;
-
+        const url = (formData.get('url') as string).toLowerCase();
+        const nickname = (formData.get('nickname') as string).toLowerCase();
+        console.log(`➕ Request to add ${url} as ${nickname}`)
         const { error } = await supabase
             .from('url_nicknames')
             .insert([
@@ -21,9 +21,10 @@ export const actions = {
             ])
         
         if (error) {
-            console.error(error)
+            console.error(`❌ ${error}`)
             return { success: false, error}
         } else {
+            console.log(`✅ Successfully added ${url} as ${nickname}`)
             return { success: true, nickname, url}
         }
     }
