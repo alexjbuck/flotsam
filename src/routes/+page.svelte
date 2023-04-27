@@ -8,8 +8,13 @@
 	export let form: ActionData;
 
 	let shorturl = '';
+	let query = '';
+	
+	if (data.url_nicknames.data) {
+		data.url_nicknames.data.sort((a, b) => a.nickname.localeCompare(b.nickname));
+	} else {
 
-	data.url_nicknames.data.sort((a, b) => a.nickname.localeCompare(b.nickname));
+	}
 	if (form?.success) {
 		shorturl = `${data.origin}/f/${form.nickname}`;
     }
@@ -30,15 +35,15 @@
 		Full URL
 		<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
 			<div class="input-group-shim">https://</div>
-			<input type="search" placeholder="www.example.com" name="url" />
+			<input type="text" placeholder="www.example.com" name="url" />
 		</div>
 	</label>
 
 	<label class="label">
 		Nickname
 		<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
-			<div class="input-group-shim">flotsam.vercel.app/f/</div>
-			<input type="search" placeholder="jetsam" name="nickname" />
+			<div class="input-group-shim">{data.origin}/f/</div>
+			<input type="text" placeholder="jetsam" name="nickname" />
 		</div>
 	</label>
 
@@ -67,6 +72,10 @@
 {/if}
 
 {#if data.url_nicknames.data?.length}
+	<label class='input-group input-group-divider grid-cols-[auto_1fr_auto] my-4'>
+		<div class="input-group-shim">Find flotsam</div>
+		<input type="search" class='search' name="search" id="search" bind:value={query} placeholder="Search, e.g. dinglehopper">
+	</label>
 	<div class="table-container">
 		<table class="table table-hover table-interactive">
 			<thead>
@@ -77,17 +86,19 @@
 			</thead>
 			<tbody>
 				{#each data.url_nicknames.data as entry}
-					<tr use:clipboard={`${data.origin}/f/${entry.nickname}`} 
-                        on:click={()=>{
-                            const t = {
-                                message: `/f/${entry.nickname} copied!`,
-                                };
-                            toastStore.trigger(t);
-                        }
-                    }>
-						<td><span class="text-surface-600">/f/</span>{entry.nickname}</td>
-						<td>{entry.url}</td>
-					</tr>
+					{#if entry.nickname.includes(query) || entry.url.includes(query) }
+						<tr use:clipboard={`${data.origin}/f/${entry.nickname}`} 
+							on:click={()=>{
+								const t = {
+									message: `/f/${entry.nickname} copied!`,
+									};
+								toastStore.trigger(t);
+							}
+						}>
+							<td><span class="text-surface-600">/f/</span>{entry.nickname}</td>
+							<td>{entry.url}</td>
+						</tr>
+					{/if}
 				{/each}
 			</tbody>
 		</table>
